@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, key, parent) -> None:
+    def __init__(self, key, parent=None) -> None:
         self.key = key
         self.parent = parent # Referencia al padre
         self.left = None
@@ -53,6 +53,27 @@ class SplayTree:
         y.right = curr_node # Se actualizan referencias
         curr_node.parent = y
 
+    # ---------------- ZIG-ZIG ------------------
+    def zig_zig(self, curr_node):
+        self.left_rotation(curr_node.parent)
+        self.left_rotation(curr_node)
+
+    # ---------------- ZAG-ZAG ------------------
+    def zag_zag(self, curr_node):
+        self.right_rotation(curr_node.parent)
+        self.right_rotation(curr_node)
+
+    # ---------------- ZIG-ZAG ------------------
+    def zig_zag(self, curr_node):
+        self.right_rotation(curr_node)
+        self.left_rotation(curr_node)
+
+    # ---------------- ZAG-ZIG ------------------
+    def zag_zig(self, curr_node):
+        self.left_rotation(curr_node)
+        self.right_rotation(curr_node)
+
+
     def splay_tree(self, node):
         pass
 
@@ -64,3 +85,4 @@ class SplayTree:
 
     def delete(self, node):
         pass
+
