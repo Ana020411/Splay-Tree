@@ -14,16 +14,16 @@ class SplayTree:
         y = curr_node.right
         curr_node.right = y.left 
 
-        if y.left is not None:  # Check if the left child of 'y' exists
+        if y.left is not None:  # Se checa si el hijo izquierdo de "y" existe
             y.left.parent = curr_node
 
         y.parent = curr_node.parent
 
-        if curr_node.parent is None:  # curr_node is root
+        if curr_node.parent is None:  # curr_node es raíz
             self.root = y
-        elif curr_node == curr_node.parent.left:  # curr_node is left child
+        elif curr_node == curr_node.parent.left:  # curr_node es hijo izquierdo
             curr_node.parent.left = y
-        else:  # curr_node is right child
+        else:  # curr_node es hijo derecho
             curr_node.parent.right = y
 
         y.left = curr_node
@@ -35,16 +35,16 @@ class SplayTree:
         y = curr_node.left
         curr_node.left = y.right
 
-        if y.right is not None:  # Check if the right child of 'y' exists
+        if y.right is not None:  # Se checa si el hijo derecho de "y" existe
             y.right.parent = curr_node
 
         y.parent = curr_node.parent
 
-        if curr_node.parent is None:  # curr_node is root
+        if curr_node.parent is None:  # curr_node es raíz
             self.root = y
-        elif curr_node == curr_node.parent.right:  # curr_node is right child
+        elif curr_node == curr_node.parent.right:  # curr_node es hijo derecho
             curr_node.parent.right = y
-        else:  # curr_node is left child
+        else:  # curr_node es hijo izquierdo
             curr_node.parent.left = y
 
         y.right = curr_node
@@ -133,7 +133,7 @@ class SplayTree:
         # Top - down 
         node = self.search_node(value)
 
-        if self.root is None:
+        if node is None:
             return None
         
         self.splay_tree(node) # Para que quede como raíz
@@ -153,11 +153,19 @@ class SplayTree:
         if left_subtree.root is not None:
             max_node = left_subtree.max(left_subtree.root) # Se saca el nodo con mayor valor del subárbol izquierdo
             left_subtree.splay_tree(max_node)
+            
+            # Referencias
             left_subtree.root.right = right_subtree.root # Se une el subarbol derecho y el izquierdo
+            if right_subtree.root is not None: # Si existe un subarbol derecho
+                right_subtree.root.parent = left_subtree.root # Se une la raíz del derecho con el izquierdo
+                
             self.root = left_subtree.root
 
         else:
             self.root = right_subtree.root
+
+        if self.root is not None:
+            self.root.parent = None
 
     # ------------------------------------- FUNCIONES DEL DELETE -----------------------------
     def search_node(self, value):
@@ -205,8 +213,8 @@ tree.insert(10)
 tree.insert(8)
 tree.insert(20)
 tree.insert(5)
-#tree.insert(4)
-#tree.insert(3)
+tree.insert(4)
+
 
 print("Raíz:")
 print(tree.root.value)
@@ -215,6 +223,7 @@ print(tree.inorder())
 print("¿Se encontró?")
 print(tree.search(8))
 print("--------------------------------------------------------")
+tree.delete(5)
 tree.delete(8)
 print("Raíz:")
 print(tree.root.value)
